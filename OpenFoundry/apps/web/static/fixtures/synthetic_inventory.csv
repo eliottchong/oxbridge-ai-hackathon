@@ -1,0 +1,4 @@
+resource_id,resource_name,recorded_balance,unit,reorder_threshold,lot_id,lot_expiry
+buffer-a,Buffer A,700,uL,100,lot-buffer-a-001,2027-12-31
+indicator-b,Indicator B,150,uL,100,lot-indicator-b-001,2027-12-31
+wash-c,Wash C,2.0,mL,0.1,lot-wash-c-001,2027-12-31

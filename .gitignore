@@ -5,3 +5,9 @@ OpenFoundry/apps/web/.env
 OpenFoundry/target/
 .pnpm-store/
 .DS_Store
+.data/
+OpenFoundry/apps/web/.data/
+OpenFoundry/apps/web/node_modules/
+OpenFoundry/apps/web/.env.*
+!OpenFoundry/apps/web/.env.example
+node_modules/

@@ -1,0 +1,59 @@
+{
+  "synthetic": true,
+  "protocol_id": "SYN-MICROPLATE-001",
+  "version": "1.0",
+  "fixed_controls": 2,
+  "replicates_per_specimen": 1,
+  "overage_percent": "10",
+  "per_reaction_uL": {
+    "buffer-a": "60",
+    "indicator-b": "15",
+    "wash-c": "100"
+  },
+  "recorded_inventory_uL": {
+    "buffer-a": "700",
+    "indicator-b": "150",
+    "wash-c": "2000"
+  },
+  "scenarios": [
+    {
+      "specimens": 8,
+      "reactions": 10,
+      "required_uL": [
+        "660",
+        "165",
+        "1100"
+      ],
+      "forecast_uL": [
+        "40",
+        "-15",
+        "900"
+      ],
+      "shortage_uL": [
+        "0",
+        "15",
+        "0"
+      ]
+    },
+    {
+      "specimens": 6,
+      "reactions": 8,
+      "required_uL": [
+        "528",
+        "132",
+        "880"
+      ],
+      "forecast_uL": [
+        "172",
+        "18",
+        "1120"
+      ],
+      "shortage_uL": [
+        "0",
+        "0",
+        "0"
+      ]
+    }
+  ],
+  "notes": "Independent fixture expected values; not extracted by application parser."
+}
