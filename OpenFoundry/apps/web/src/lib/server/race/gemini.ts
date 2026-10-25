@@ -4,7 +4,7 @@ import { appendFileSync } from 'node:fs';
 type JsonObject = Record<string, any>;
 type Tool = { name: string; description?: string; url: string; inputSchema?: JsonObject };
 export type RaceTask = { type: string; input: unknown; tools?: Tool[]; challengeToken?: string;
-  schema?: JsonObject; limits?: { maxToolCalls?: number; timeoutMs?: number } };
+  schema?: JsonObject; limits?: { maxToolCalls?: number; timeoutMs?: number; maxSpendUsd?: number } };
 export class RaceError extends Error {
   constructor(public status: number, public code: string, message: string) { super(message); }
 }

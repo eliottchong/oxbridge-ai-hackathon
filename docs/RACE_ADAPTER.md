@@ -46,7 +46,17 @@ The tunnel URL is temporary: the laptop must remain awake and connected and both
 
 148 tests across preflight and race adapter, clean Svelte type checks, production build, and HTTP checks for missing/wrong/correct bearer tokens, malformed tasks and real `/lab` rendering. New tests cover model metadata, model-selected tool execution, challenge-token separation, preserved provider signatures, transient retries, call budgets, origin restrictions, quota errors and timeouts. Live Gemini connectivity has also been checked. Only the platform's actual race verification establishes milestone points.
 
-Do not final-submit while the team is still developing. No payments or automatic scientific decisions are added by this adapter.
+Do not final-submit while the team is still developing. No automatic scientific decisions or lab payments are added to the product workflow.
+
+## Optional fifth scoring milestone: devnet payment
+
+The user subsequently requested completion of the remaining payment milestone to reach 5/6, keeping final submission unlocked. The authenticated `run_workflow` handler is a separate scoring-only executor. Gemini extracts the requested recipient, exact decimal amount and memo. Deterministic code requires these to occur in the request, validates the task budget, and signs only on Solana devnet using Circle's official test-USDC mint. The RPC URL and devnet genesis hash are fixed in code; changing an environment variable cannot switch to mainnet.
+
+This handler needs explicit `RACE_DEVNET_PAYMENTS=true`, `RACE_WALLET_FILE`, `RACE_WALLET_ADDRESS`, and `RACE_PAYMENT_DB_PATH`, all server-side. It reuses the existing team devnet wallet without replacing its key or touching the completed optional puzzle records. The wallet needs test USDC from Circle faucet and test SOL for fees/account rent.
+
+Limits: at most one test USDC per task and two test USDC cumulatively, further restricted by the supplied task limit. Recipient token-account creation, USDC transfer and exact memo share one transaction. Every transaction is simulated. A separate SQLite journal reserves the nonce and records the locally computed signature **before** broadcast. Replayed requests reuse a confirmed signature; unresolved signatures never trigger a new transfer. The private key is read only by local signing code, never sent to Gemini, RPC, browser or Git.
+
+The lab inventory database and actual-use ledger remain separate. This scoring feature does not enable procurement, real-money transfers or laboratory payments.
 
 ## Live verification, 25 October 2026
 
