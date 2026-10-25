@@ -1,0 +1,7 @@
+OpenFoundry/node_modules/
+OpenFoundry/apps/web/.svelte-kit/
+OpenFoundry/apps/web/build/
+OpenFoundry/apps/web/.env
+OpenFoundry/target/
+.pnpm-store/
+.DS_Store

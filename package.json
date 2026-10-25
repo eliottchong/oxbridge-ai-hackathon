@@ -1,0 +1,10 @@
+{
+  "name": "oxbridgehackathon",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix OpenFoundry/apps/web run dev -- --host 127.0.0.1",
+    "test": "npm --prefix OpenFoundry/apps/web run test -- src/lib/lab/model.test.ts",
+    "check": "npm --prefix OpenFoundry/apps/web run check",
+    "build": "npm --prefix OpenFoundry/apps/web run build"
+  }
+}
