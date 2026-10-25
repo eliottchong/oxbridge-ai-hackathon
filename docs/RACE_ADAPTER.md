@@ -24,6 +24,8 @@ Add `GEMINI_API_KEY` for model verification. The scoring environment keeps the p
 
 Use a Google AI Studio project on Free Tier for no-cost model requests. The selected model has free-tier text input/output, subject to eligibility and quota; the adapter does not enable billing or invoke paid grounding/search. `RACE_USAGE_LOG` optionally points at a private JSONL log containing model name, timestamp and token usage only. No prompts, credentials or tool results are logged.
 
+At the event, Node's TLS connection to Google began failing with `ECONNRESET`, while the system HTTPS client returned a genuine model response. Google requests therefore use the system curl client with certificate verification, bounded response size and timeout, and the task's abort signal. The API key and JSON request travel over stdin rather than process arguments. Tool requests retain the existing HTTPS origin checks.
+
 For `use_tools`, Gemini chooses the provided function and arguments. The server makes the actual POST request with the challenge bearer token, gives the returned data back to Gemini, and reports the observed tool results. The challenge token is never sent to Gemini. Tool URLs require HTTPS and default to the organiser's domain; a server-side `RACE_TOOL_HOSTS` allowlist can name a separately documented organiser service. Redirects, payment/order operations, excess calls and excess execution time are rejected. Transient tool 503s receive bounded retries within the same call budget.
 
 Run the official Cloudflare Tunnel client to expose only this instance:

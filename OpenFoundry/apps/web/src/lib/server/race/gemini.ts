@@ -1,5 +1,6 @@
 import { env } from '$env/dynamic/private';
 import { appendFileSync } from 'node:fs';
+import { geminiTransport } from './google-fetch';
 
 type JsonObject = Record<string, any>;
 type Tool = { name: string; description?: string; url: string; inputSchema?: JsonObject };
@@ -25,7 +26,7 @@ function toolUrl(tool: Tool): string {
   return url.href;
 }
 
-export async function solveWithGemini(task: RaceTask, fetcher: typeof fetch = fetch) {
+export async function solveWithGemini(task: RaceTask, fetcher: typeof fetch = geminiTransport) {
   if (!object(task) || !['respond', 'use_tools'].includes(task.type) || task.input === undefined || task.input === null) {
     return fail(400, 'invalid_input', 'Expected a respond or use_tools task with input.');
   }
