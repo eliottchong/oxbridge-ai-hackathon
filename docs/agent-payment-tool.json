@@ -1,0 +1,26 @@
+{
+  "type": "function",
+  "name": "run_workflow",
+  "description": "Execute the explicitly requested Solana devnet USDC payment. Copy recipient, amount and memo exactly from the authorised task. Use its stable task ID for all retries. Requires the separately authorised payment service; never invent missing inputs or create a new ID to retry an uncertain transfer.",
+  "strict": true,
+  "parameters": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "type": { "type": "string", "enum": ["run_workflow"] },
+      "taskId": { "type": "string", "description": "Original stable workflow task ID, unchanged across retries." },
+      "instructions": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "network": { "type": "string", "enum": ["solana-devnet"] },
+          "to": { "type": "string", "description": "Exact requested recipient wallet owner address." },
+          "amountUsdc": { "type": "string", "description": "Exact positive decimal USDC amount, at most six decimal places." },
+          "memo": { "type": "string", "description": "Exact requested memo. Preserve all whitespace and characters." }
+        },
+        "required": ["network", "to", "amountUsdc", "memo"]
+      }
+    },
+    "required": ["type", "taskId", "instructions"]
+  }
+}

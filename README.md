@@ -40,8 +40,12 @@ LABRELAX_DEMO_MODE=true LABRELAX_DB_PATH=/absolute/persistent/labrelax.sqlite OR
 
 Use a persistent volume for SQLite and one Node application instance. Do not use ephemeral/serverless filesystem hosting for persistent stock. For a private workspace, set `LABRELAX_DEMO_MODE=false`, `LABRELAX_ACCESS_TOKEN` and `LABRELAX_SESSION_SECRET`; the application then requires the workspace token. `.env.example` documents configuration. Set `BODY_SIZE_LIMIT=3M` when serving the Node build so multipart uploads near the 2 MB file limit are accepted.
 
+## Agentic devnet payments
+
+Optional `run_workflow` payment API sends real **test-money USDC on Solana devnet**, includes the requested memo and returns `output.data.signature` only after confirmation and transaction verification. It requires a separately authorised, funded agent wallet and payment API token. Signed transactions are persisted before broadcast so task retries cannot create another payment. See [setup, task contract and Builder integration](docs/AGENT_PAYMENTS.md).
+
 ## Scope
 
-One supported synthetic SOP layout. No arbitrary document understanding, scientific validity certification, supplier orders, instrument execution or payments. The restricted-project API is denied server-side; demo-mode access is intentionally shared and is not individual institutional authentication. Historical events preserve planned/actual quantities, authenticated session actor, source protocol, lot uncertainty and variance.
+One supported synthetic SOP layout. No arbitrary document understanding, scientific validity certification, supplier orders or instrument execution. Payments are an explicitly enabled Solana devnet integration; no mainnet payments are supported. The restricted-project API is denied server-side; demo-mode access is intentionally shared and is not individual institutional authentication. Historical events preserve planned/actual quantities, authenticated session actor, source protocol, lot uncertainty and variance.
 
 The OpenFoundry Apache-2.0 licence is retained in `OpenFoundry/LICENSE`. Upstream services remain reference source; this demonstrator uses its SvelteKit scaffold and a dedicated SQLite backend, with no requirement to run the Rust service stack.

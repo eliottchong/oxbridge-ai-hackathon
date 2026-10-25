@@ -32,6 +32,9 @@
   },
   "dependencies": {
     "@iconify/svelte": "^4.0.0",
+    "@solana/spl-token": "^0.4.15",
+    "@solana/web3.js": "^1.99.0",
+    "bs58": "^6.0.0",
     "cytoscape": "^3.33.2",
     "echarts": "^6.0.0",
     "maplibre-gl": "^5.23.0",

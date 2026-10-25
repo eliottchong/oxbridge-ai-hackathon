@@ -11,3 +11,5 @@ OpenFoundry/apps/web/node_modules/
 OpenFoundry/apps/web/.env.*
 !OpenFoundry/apps/web/.env.example
 node_modules/
+.wallets/
+*.keypair.json

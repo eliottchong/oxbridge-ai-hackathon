@@ -1,4 +1,8 @@
 packages:
   - "apps/*"
 allowBuilds:
+  # Optional native acceleration; use the packages' JavaScript fallbacks.
+  bigint-buffer: false
+  bufferutil: false
   esbuild: true
+  utf-8-validate: false

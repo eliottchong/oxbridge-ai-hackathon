@@ -4,9 +4,11 @@
   "engines": { "node": ">=22.13" },
   "scripts": {
     "dev": "pnpm --dir OpenFoundry/apps/web dev --host 127.0.0.1",
-    "test": "pnpm --dir OpenFoundry/apps/web exec vitest run src/lib/server/preflight",
+    "test": "pnpm --dir OpenFoundry/apps/web exec vitest run src/lib/server/preflight src/lib/server/payments src/routes/api/agent",
     "check": "pnpm --dir OpenFoundry/apps/web check",
     "build": "pnpm --dir OpenFoundry/apps/web build",
-    "start": "node OpenFoundry/apps/web/build/index.js"
+    "start": "node OpenFoundry/apps/web/build/index.js",
+    "payments:wallet": "node scripts/payments.mjs wallet",
+    "payments:run": "node --env-file-if-exists=OpenFoundry/apps/web/.env scripts/payments.mjs run"
   }
 }
