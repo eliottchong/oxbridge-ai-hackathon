@@ -4,9 +4,10 @@
   "engines": { "node": ">=22.13" },
   "scripts": {
     "dev": "pnpm --dir OpenFoundry/apps/web dev --host 127.0.0.1",
-    "test": "pnpm --dir OpenFoundry/apps/web exec vitest run src/lib/server/preflight",
+    "test": "pnpm --dir OpenFoundry/apps/web exec vitest run src/lib/server/preflight src/lib/server/research",
     "check": "pnpm --dir OpenFoundry/apps/web check",
     "build": "pnpm --dir OpenFoundry/apps/web build",
-    "start": "node OpenFoundry/apps/web/build/index.js"
+    "start": "node --env-file-if-exists=OpenFoundry/apps/web/.env OpenFoundry/apps/web/build/index.js",
+    "smoke": "node scripts/smoke-backend.mjs && node scripts/smoke-research.mjs"
   }
 }

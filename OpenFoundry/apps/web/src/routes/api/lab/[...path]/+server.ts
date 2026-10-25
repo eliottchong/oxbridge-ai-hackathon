@@ -5,6 +5,9 @@ import { getStore } from '$lib/server/preflight/store';
 import { LabService } from '$lib/server/preflight/service';
 import { parseProtocolFile, ProtocolParseError, MAX_PROTOCOL_BYTES } from '$lib/server/preflight/parser';
 import { transcribeWithAI, AITranscriptionError } from '$lib/server/preflight/ai-transcription';
+import { ResearchService } from '$lib/server/research/service';
+import { startResearchRun } from '$lib/server/research/agent';
+import type { ProtocolDraft } from '$lib/preflight/types';
 
 async function readBounded(request: Request, maximum: number): Promise<Uint8Array> {
   const reader = request.body?.getReader();
@@ -49,6 +52,33 @@ async function handle(event: RequestEvent): Promise<Response> {
     const actor = authenticate(event);
     if (method !== 'GET') requireMutation(event, actor);
     const service = new LabService(getStore());
+    if (path === 'protocols' && method === 'GET') {
+      const project = event.url.searchParams.get('project_id');
+      requireProject(actor, project);
+      return json({ protocols: service.store.list<ProtocolDraft>('protocols', project) });
+    }
+    if (path === 'investigations' || path.startsWith('investigations/')) {
+      const research = new ResearchService(service.store);
+      if (path === 'investigations' && method === 'GET') return json({ investigations: research.list(actor, event.url.searchParams.get('project_id')) });
+      if (path === 'investigations' && method === 'POST') return json(research.create(actor, await bodyJson(event)), { status: 201 });
+      const investigation = /^investigations\/([^/]+)$/.exec(path);
+      if (investigation && method === 'GET') return json(research.detail(actor, investigation[1]));
+      const evidence = /^investigations\/([^/]+)\/evidence$/.exec(path);
+      if (evidence && method === 'POST') return json(research.importEvidence(actor, evidence[1], await bodyJson(event)), { status: 201 });
+      const evidenceSource = /^investigations\/([^/]+)\/evidence\/([^/]+)\/source$/.exec(path);
+      if (evidenceSource && method === 'GET') {
+        const [record] = research.readEvidence(actor, evidenceSource[1], [evidenceSource[2]]);
+        return new Response(record.original_content, { headers: { 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': 'attachment; filename="investigation-evidence.csv"', 'X-Content-Type-Options': 'nosniff' } });
+      }
+      const design = /^investigations\/([^/]+)\/design\/review$/.exec(path);
+      if (design && method === 'POST') return json(research.reviewDesign(actor, design[1], await bodyJson(event)));
+      const runs = /^investigations\/([^/]+)\/runs$/.exec(path);
+      if (runs && method === 'POST') return json(startResearchRun(research, actor, runs[1], (await bodyJson(event)).idempotency_key), { status: 202 });
+      const run = /^investigations\/([^/]+)\/runs\/([^/]+)$/.exec(path);
+      if (run && method === 'GET') return json(research.getRun(actor, run[1], run[2]));
+      const review = /^investigations\/([^/]+)\/proposals\/([^/]+)\/review$/.exec(path);
+      if (review && method === 'POST') return json(research.reviewProposal(actor, review[1], review[2], await bodyJson(event)));
+    }
     if (path === 'inventory' && method === 'GET') return json({ resources: service.inventory(actor, event.url.searchParams.get('project_id')) });
     if (path === 'inventory/import' && method === 'POST') return json(service.importInventory(actor, await bodyJson(event)));
     if (path === 'experiments' && method === 'GET') return json({ experiments: service.experiments(actor, event.url.searchParams.get('project_id')) });

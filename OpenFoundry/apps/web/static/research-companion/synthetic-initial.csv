@@ -1,0 +1,11 @@
+run_id,specimen_id,sample_group,measurement_order,signal,is_control
+synthetic-initial,A-1,A,1,12,false
+synthetic-initial,A-2,A,2,14,false
+synthetic-initial,A-3,A,3,16,false
+synthetic-initial,A-4,A,4,18,false
+synthetic-initial,B-1,B,5,20,false
+synthetic-initial,B-2,B,6,22,false
+synthetic-initial,B-3,B,7,24,false
+synthetic-initial,B-4,B,8,26,false
+synthetic-initial,CTRL-1,CONTROL,9,20,true
+synthetic-initial,CTRL-2,CONTROL,10,20,true
