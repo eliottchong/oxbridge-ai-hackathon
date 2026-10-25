@@ -3,7 +3,7 @@
 This branch adds the ASRP/1 interface to commit `0192bfe`. It does not change protocol parsing, lab permissions, calculations or the consumption ledger.
 
 - `GET /agent-studio/v1/health` requires `Authorization: Bearer <AGENT_STUDIO_VERIFIER_TOKEN>` and returns the ASRP ready envelope.
-- `POST /agent-studio/v1/tasks` requires the same token. Malformed requests return 400. Valid requests currently return 503 because a real model/tool adapter has not been configured. Do not claim AI or tool verification on this branch yet.
+- `POST /agent-studio/v1/tasks` requires the same token. Malformed requests return 400. `respond` and `use_tools` tasks run through Google Gemini 3.5 Flash-Lite using server-side `GEMINI_API_KEY`. Output echoes the nonce and identifies the actual model. Missing configuration, quota exhaustion and provider errors return explicit error envelopes; there is no paid-provider fallback.
 - The token is read only from the server environment; never put it in source or browser configuration.
 
 ## Isolated hackathon deployment
@@ -19,6 +19,12 @@ node --env-file=/absolute/private/path/race.env build/index.js
 ```
 
 The environment file needs `AGENT_STUDIO_VERIFIER_TOKEN`, a random `LABRELAX_SESSION_SECRET`, `LABRELAX_DEMO_MODE=true`, `LABRELAX_DB_PATH` pointing at an isolated database, `HOST=127.0.0.1`, `PORT=5180`, `BODY_SIZE_LIMIT=3M`, and `ORIGIN` set to the public HTTPS tunnel URL. Do not reuse the builder's database.
+
+Add `GEMINI_API_KEY` for model verification. The scoring environment keeps the previously saved OpenAI credential under `UNUSED_OPENAI_API_KEY` so the existing lab parser cannot accidentally invoke OpenAI. This branch adds Gemini to the verifier adapter; it does not claim the builder's separate research coordinator has been migrated to Gemini.
+
+Use a Google AI Studio project on Free Tier for no-cost model requests. The selected model has free-tier text input/output, subject to eligibility and quota; the adapter does not enable billing or invoke paid grounding/search. `RACE_USAGE_LOG` optionally points at a private JSONL log containing model name, timestamp and token usage only. No prompts, credentials or tool results are logged.
+
+For `use_tools`, Gemini chooses the provided function and arguments. The server makes the actual POST request with the challenge bearer token, gives the returned data back to Gemini, and reports the observed tool results. The challenge token is never sent to Gemini. Tool URLs require HTTPS and default to the organiser's domain; a server-side `RACE_TOOL_HOSTS` allowlist can name a separately documented organiser service. Redirects, payment/order operations, excess calls and excess execution time are rejected. Transient tool 503s receive bounded retries within the same call budget.
 
 Run the official Cloudflare Tunnel client to expose only this instance:
 
@@ -38,6 +44,6 @@ The tunnel URL is temporary: the laptop must remain awake and connected and both
 
 ## Validation
 
-Authentication unit test, Svelte type checks, production build, and HTTP checks for missing/wrong/correct bearer tokens, malformed tasks, honest unconfigured-model response and real `/lab` rendering. Then use the platform's Test connection and actual race verification before reporting points.
+148 tests across preflight and race adapter, clean Svelte type checks, production build, and HTTP checks for missing/wrong/correct bearer tokens, malformed tasks and real `/lab` rendering. New tests cover model metadata, model-selected tool execution, challenge-token separation, preserved provider signatures, transient retries, call budgets, origin restrictions, quota errors and timeouts. Live Gemini connectivity has also been checked. Only the platform's actual race verification establishes milestone points.
 
 Do not final-submit while the team is still developing. No payments or automatic scientific decisions are added by this adapter.
