@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import Icon from '$lib/lab/Icon.svelte';
+  import InvestigationWorkspace from '$lib/research/InvestigationWorkspace.svelte';
   import type { ActualLine, Confirmation, ConsumptionEvent, InventoryResource, ProtocolDraft, RunPlan, SessionInfo } from '$lib/preflight/types';
   import './lab.css';
 
@@ -15,7 +16,7 @@
   let plan = $state<RunPlan | null>(null);
   let continuity = $state<Continuity | null>(null);
   let confirmation = $state<Confirmation | null>(null);
-  let tab = $state('Preflight');
+  let tab = $state('Investigation');
   let busy = $state('Connecting to your workspace');
   let error = $state('');
   let notice = $state('');
@@ -37,7 +38,7 @@
   let importAcknowledged = $state(false);
   let fileInput: HTMLInputElement;
   const projectId = 'demo-lab';
-  const navigation = [{ name: 'Preflight', icon: 'flask' }, { name: 'Inventory', icon: 'box' }, { name: 'Experiment history', icon: 'clock' }];
+  const navigation = [{ name: 'Investigation', icon: 'spark' }, { name: 'Preflight', icon: 'flask' }, { name: 'Inventory', icon: 'box' }, { name: 'Experiment history', icon: 'clock' }];
   const filteredInventory = $derived(inventory.filter(item => item.name.toLowerCase().includes(search.toLowerCase())));
   const stage = $derived(!draft ? 1 : !approved ? 2 : !plan ? 3 : 4);
   const amount = (value: string | number | null | undefined) => value === null || value === undefined ? '—' : new Intl.NumberFormat('en-GB', { maximumFractionDigits: 6 }).format(Number(value));
@@ -181,18 +182,26 @@
     const url = URL.createObjectURL(new Blob([JSON.stringify(continuity, null, 2)], { type: 'application/json' }));
     const link = document.createElement('a'); link.href = url; link.download = `labrelax-${historyId}.json`; link.click(); URL.revokeObjectURL(url);
   }
+  async function openResearchPlan(id: string) {
+    await loadContinuity(id);
+    if (!continuity || continuity.experiment.id !== id) return;
+    draft = continuity.protocol; approved = draft.status === 'approved'; acknowledged = approved;
+    plan = continuity.plans.toSorted((a, b) => a.created_at.localeCompare(b.created_at)).at(-1) ?? null;
+    experimentId = id; experimentName = continuity.experiment.name; specimenCount = plan?.specimen_count ?? 8;
+    confirmation = continuity.confirmations.at(-1) ?? null; actualOpen = false; tab = 'Preflight';
+  }
   function showHistory(id?: string) { tab = 'Experiment history'; const chosen = id || historyId || experiments[0]?.id; if (chosen) void loadContinuity(chosen); }
 </script>
 
 <svelte:head>
-  <title>LabRelax — Know before you run.</title>
-  <meta name="description" content="Source-linked protocol review, run-specific inventory checks, and a separately confirmed actual-use record. Built on OpenFoundry." />
+  <title>LabRelax — Yesterday’s results. Tomorrow’s experiment.</title>
+  <meta name="description" content="An evidence-linked research partner: investigate observations, compare explanations and prepare the next informative experiment." />
 </svelte:head>
 
 <div class="lab-app">
   <aside class="sidebar">
     <a href="/lab" class="brand"><span class="brand-icon"><Icon name="flask" size={25} /></span>labrelax<span>.</span></a>
-    <div class="workspace"><div class="workspace-avatar">LR</div><div><strong>Research workspace</strong><small>Protocol preflight</small></div><span>⌄</span></div>
+    <div class="workspace"><div class="workspace-avatar">LR</div><div><strong>Research workspace</strong><small>Research investigations</small></div><span>⌄</span></div>
     <div class="nav-label">YOUR LAB</div>
     <nav aria-label="Lab navigation">{#each navigation as item}<button class:active={tab === item.name} onclick={() => item.name === 'Experiment history' ? showHistory() : tab = item.name}><Icon name={item.icon} size={18} />{item.name}{#if item.name === 'Preflight'}<span class="nav-count">01</span>{/if}</button>{/each}</nav>
     <div class="sidebar-bottom">
@@ -204,15 +213,18 @@
   <div class="main-shell">
     <header class="topbar"><div class="breadcrumb">Workspace <span>/</span><strong>{tab}</strong></div><div class="top-actions"><span class="demo-tag">SYNTHETIC DEMONSTRATOR</span><span class="secure-label"><Icon name="shield" size={14} />Researcher review</span></div></header>
     <main>
-      <div class="page-heading"><div><div class="eyebrow">LABRELAX / EXPERIMENT READINESS</div><h1>{tab === 'Preflight' ? 'Know before you run.' : tab === 'Inventory' ? 'Every resource, accounted for.' : 'The story behind the experiment.'}</h1><p>{tab === 'Preflight' ? 'From protocol to a clear, source-linked materials decision.' : tab === 'Inventory' ? 'Recorded balances, thresholds and lots. Live from your workspace.' : 'Reviewed assumptions, planned quantities and confirmed actual use.'}</p></div><span class="heading-icon"><Icon name={tab === 'Inventory' ? 'box' : tab === 'Experiment history' ? 'clock' : 'flask'} size={34} /></span></div>
-      <div class="demo-notice"><span><span class="notice-dot"></span>Synthetic protocol & inventory · Hackathon demonstrator</span><span>Readiness checks recorded materials, not scientific validity.</span></div>
+      <div class="page-heading"><div><div class="eyebrow">LABRELAX / RESEARCH CONTINUITY</div><h1>{tab === 'Investigation' ? 'Yesterday’s results. Tomorrow’s experiment.' : tab === 'Preflight' ? 'Know before you run.' : tab === 'Inventory' ? 'Every resource, accounted for.' : 'The story behind the experiment.'}</h1><p>{tab === 'Investigation' ? 'A research partner that keeps the evidence, the next question and your lab connected.' : tab === 'Preflight' ? 'From protocol to a clear, source-linked materials decision.' : tab === 'Inventory' ? 'Recorded balances, thresholds and lots. Live from your workspace.' : 'Reviewed assumptions, planned quantities and confirmed actual use.'}</p></div><span class="heading-icon"><Icon name={tab === 'Investigation' ? 'spark' : tab === 'Inventory' ? 'box' : tab === 'Experiment history' ? 'clock' : 'flask'} size={34} /></span></div>
+      <div class="demo-notice"><span><span class="notice-dot"></span>Synthetic research demonstrator · No physical instruments connected</span><span>Evidence informs the next step. A scientist reviews the design.</span></div>
       {#if error}<div class="alert error" role="alert"><Icon name="shield" size={18} /><div><strong>Action needs attention</strong><p>{error}</p></div><button aria-label="Dismiss error" onclick={() => error = ''}><Icon name="close" size={16} /></button></div>{/if}
       {#if notice}<div class="notice" role="status"><Icon name="check" size={15} /><span>{notice}</span><button aria-label="Dismiss notification" onclick={() => notice = ''}><Icon name="close" size={14} /></button></div>{/if}
       {#if busy}<div class="loading" role="status"><span class="spinner"></span>{busy}…</div>{/if}
 
       {#if needsSignIn}
         <section class="panel signin-panel"><span class="signin-icon"><Icon name="shield" size={26} /></span><span class="section-kicker">YOUR RESEARCH WORKSPACE</span><h2>Sign in to LabRelax.</h2><p>Enter the workspace access token supplied by your team administrator to open protocols, recorded inventory and experiment evidence.</p><form onsubmit={signIn}><label for="workspace-token">Workspace access token</label><input id="workspace-token" type="password" autocomplete="off" spellcheck="false" bind:value={workspaceToken} placeholder="Enter your access token" required disabled={!!busy} /><button class="primary" type="submit" disabled={!!busy || !workspaceToken.trim()}>Sign in <Icon name="arrow" size={15} /></button></form><small>Your token is exchanged for an authenticated session.</small></section>
+      {:else if tab === 'Investigation'}
+        {#if session}<InvestigationWorkspace {session} approvedProtocol={approved ? draft : null} onReviewProtocol={() => tab = 'Preflight'} onViewPlan={openResearchPlan} />{/if}
       {:else if tab === 'Preflight'}
+        <div class="research-return"><button class="text-button" onclick={() => tab = 'Investigation'}>← Return to your investigation</button><span>Protocol review and actual use support your research investigation.</span></div>
         <div class="steps" aria-label="Workflow progress">{#each ['Upload protocol', 'Review evidence', 'Check readiness', 'Record actual use'] as step, i}<div class:current={stage === i + 1} class:complete={stage > i + 1}><span>{#if stage > i + 1}<Icon name="check" size={13} />{:else}{i + 1}{/if}</span><strong>{step}</strong></div>{/each}</div>
         {#if !draft}
           <div class="welcome-grid">

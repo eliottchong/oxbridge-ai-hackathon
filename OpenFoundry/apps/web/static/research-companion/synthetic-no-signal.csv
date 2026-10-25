@@ -1,0 +1,11 @@
+run_id,specimen_id,sample_group,measurement_order,signal,is_control
+synthetic-no-signal,A-1,A,1,10,false
+synthetic-no-signal,B-1,B,2,10,false
+synthetic-no-signal,B-2,B,3,10,false
+synthetic-no-signal,A-2,A,4,10,false
+synthetic-no-signal,B-3,B,5,10,false
+synthetic-no-signal,A-3,A,6,10,false
+synthetic-no-signal,A-4,A,7,10,false
+synthetic-no-signal,B-4,B,8,10,false
+synthetic-no-signal,CTRL-1,CONTROL,9,20,true
+synthetic-no-signal,CTRL-2,CONTROL,10,20,true

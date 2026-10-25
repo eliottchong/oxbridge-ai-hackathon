@@ -18,3 +18,22 @@ Screenshots `labrelax-preflight.png` and `labrelax-continuity.png` record this w
 - Production HTTP smoke: POST `/api/agent/run_workflow` without payment enablement returns HTTP 503 / `PAYMENTS_DISABLED`.
 - Live read-only devnet RPC confirms genesis `EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG` and six-decimal native devnet USDC. IPv4-first DNS resolved the initial Node connectivity timeout.
 - No live payment has been submitted: a funded agent wallet and actual task recipient/amount/memo are still required. No Builder SDK was supplied; its concrete import/signer integration has not been verified. See `AGENT_PAYMENTS.md` for the shipped adapter and explicit integration contract.
+
+## Research extension, 25 October 2026
+
+- Full preflight plus research suites: **216 tests passed** across eight files.
+- Full Svelte/TypeScript check: **zero errors, zero warnings**.
+- Production Node build: passed.
+- Original HTTP smoke: **35 checks passed**.
+- Research production HTTP smoke: **55 checks passed**, including a real separate Node process, SQLite restart persistence, source provenance/scope, full reviewed design, changed conclusions and zero stock consumption.
+- Production browser walkthrough: original CSV → actual confounding analysis → source protocol review → complete counterbalanced design → stock shortage → refreshed sufficient engineering baseline check → proposal review → synthetic later CSV → actual order-trend reanalysis and changed research direction.
+- The browser test used `/tmp/labrelax-research-browser-qa.sqlite`; it did not reset or replace the team's workspace. Its explicitly reviewed engineering stock baseline was supplied only to that isolated test database, not saved as final team data.
+- `labrelax-research-before.png` and `labrelax-research-after.png` show the actual browser flow. Sources and outputs are labelled synthetic. No physical experiment, general scientific validity, statistical significance or new discovery is claimed.
+- Real function-calling transport, failures/aborts, strict allowlist and budgets are verified with mocked provider responses. A **live provider-backed run has not been verified** without a supplied API key. No-key mode is visibly **scripted walkthrough**, while deterministic analysis and material preflight execute against the actual supplied data.
+
+## Combined research and payment merge
+
+- Resolved shared configuration, npm scripts and documentation by retaining both research investigations and separately authorised devnet payments. Hosted startup keeps `.env` loading; the root test command includes both features.
+- Combined suite: **245 tests passed across 11 files**. Full Svelte/TypeScript check: **zero errors and warnings**. Production Node build passed.
+- Both production HTTP suites passed: **35 preflight checks plus 55 research checks**, using disposable databases and local servers.
+- Live payment and live model-provider verification boundaries above still apply; merging does not enable payment credentials or submit transactions.
