@@ -13,3 +13,4 @@ OpenFoundry/apps/web/.env.*
 node_modules/
 .wallets/
 *.keypair.json
+.taste-skill/
