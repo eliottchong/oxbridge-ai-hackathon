@@ -47,3 +47,12 @@ The tunnel URL is temporary: the laptop must remain awake and connected and both
 148 tests across preflight and race adapter, clean Svelte type checks, production build, and HTTP checks for missing/wrong/correct bearer tokens, malformed tasks and real `/lab` rendering. New tests cover model metadata, model-selected tool execution, challenge-token separation, preserved provider signatures, transient retries, call budgets, origin restrictions, quota errors and timeouts. Live Gemini connectivity has also been checked. Only the platform's actual race verification establishes milestone points.
 
 Do not final-submit while the team is still developing. No payments or automatic scientific decisions are added by this adapter.
+
+## Live verification, 25 October 2026
+
+- AI feature working: passed on the second attempt at 17:06 UTC, +200 points. The first attempt reached an expired tunnel and failed before model execution.
+- Agent uses tools: passed on the second attempt at 17:09 UTC, +300 points, score 100, receipt `349FD16F`. The platform confirmed both record lookups, the exchange-rate call, the computed total and agreement between reported and recorded results. The first tool attempt recorded the real calls but lacked the required structured result; the final adapter fixes that envelope.
+- Team total after these verifications: 1,050 points, including the earlier 550.
+- Key remains in private server configuration outside Git. No billing upgrade or paid OpenAI fallback was enabled. Google account billing-tier status must remain Free Tier for no-cost requests.
+- Public URL registered for these passes: https://4ddd145c3fc9a0.lhr.life . Free tunnel domains rotate; this is not a permanent deployment.
+- Automatic monitoring remains paused at the user's request. No payment milestone was attempted, and no final submission was made.
