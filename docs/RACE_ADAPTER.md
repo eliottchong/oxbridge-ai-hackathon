@@ -46,7 +46,7 @@ The tunnel URL is temporary: the laptop must remain awake and connected and both
 
 ## Validation
 
-148 tests across preflight and race adapter, clean Svelte type checks, production build, and HTTP checks for missing/wrong/correct bearer tokens, malformed tasks and real `/lab` rendering. New tests cover model metadata, model-selected tool execution, challenge-token separation, preserved provider signatures, transient retries, call budgets, origin restrictions, quota errors and timeouts. Live Gemini connectivity has also been checked. Only the platform's actual race verification establishes milestone points.
+139 preflight tests and 16 race-adapter tests have passed, with clean Svelte type checks and a production build. HTTP checks cover missing/wrong/correct bearer tokens, malformed tasks and real `/lab` rendering. Adapter tests cover model metadata, model-selected tool execution, challenge-token separation, preserved provider signatures, transient retries, call budgets, origin restrictions, quota errors, payment limits/idempotency, and system HTTPS credential handling and cancellation. Live Gemini connectivity has also been checked. Only the platform's actual race verification establishes milestone points.
 
 Do not final-submit while the team is still developing. No automatic scientific decisions or lab payments are added to the product workflow.
 
@@ -64,7 +64,8 @@ The lab inventory database and actual-use ledger remain separate. This scoring f
 
 - AI feature working: passed on the second attempt at 17:06 UTC, +200 points. The first attempt reached an expired tunnel and failed before model execution.
 - Agent uses tools: passed on the second attempt at 17:09 UTC, +300 points, score 100, receipt `349FD16F`. The platform confirmed both record lookups, the exchange-rate call, the computed total and agreement between reported and recorded results. The first tool attempt recorded the real calls but lacked the required structured result; the final adapter fixes that envelope.
-- Team total after these verifications: 1,050 points, including the earlier 550.
+- Agentic end-to-end payment: passed on attempt 4 at 17:45 UTC, +400 points, score 100, receipt `3BF69949`. The platform confirmed the transaction settled on devnet, paid 0.01 test USDC to the requested organiser address, and carried the fresh attempt memo. Earlier attempts failed before any transfer because of an expired tunnel and the event network resetting Node's Google connection.
+- The separate payment journal records exactly one confirmed transfer. Team total: 1,450 points, five of six build milestones passed, including the earlier 350 optional challenge points.
 - Key remains in private server configuration outside Git. No billing upgrade or paid OpenAI fallback was enabled. Google account billing-tier status must remain Free Tier for no-cost requests.
 - Public URL registered for these passes: https://4ddd145c3fc9a0.lhr.life . Free tunnel domains rotate; this is not a permanent deployment.
-- Automatic monitoring remains paused at the user's request. No payment milestone was attempted, and no final submission was made.
+- Automatic monitoring remains paused at the user's request. No final submission was made; the sixth milestone remains open.
