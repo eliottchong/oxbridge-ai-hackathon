@@ -2,7 +2,9 @@
 
 **LabRelax turns yesterday’s results into tomorrow’s experiment.** A bounded research partner for the Oxbridge AI hackathon, built inside OpenFoundry’s SvelteKit application.
 
-Create an investigation, import observations, compare a sample-associated effect with a measurement-order explanation, and prepare a complete counterbalanced follow-up using a reviewed protocol and current recorded stock. Import later results to revise the next research direction. Each interpretation retains source rows, hashes, tool outputs and previous revisions.
+The presentation opens with a guided PCR investigation: explain the input, run transparent calculations, inspect interpretations, choose a fictional follow-up experiment, then introduce new fictional observations and reconsider the next step. The supplied PCR PDF is retained as source context; observations and extension experiments are explicitly invented for the demonstration.
+
+The earlier microplate investigation remains available from **Open earlier microplate investigations**. It compares a sample-associated effect with a measurement-order explanation and connects a reviewed design to the existing material preflight.
 
 The existing supported-PDF review, exact material preflight and separate actual-use confirmation remain available. Research analysis and planning never consume stock. All investigation records and append-only usage events persist in the same SQLite database.
 
@@ -23,7 +25,15 @@ pnpm check
 pnpm build
 ```
 
-## Research walkthrough
+## PCR presentation demo
+
+Open **Investigation** to begin a fresh presentation. Add a research question, inspect the supplied PCR source and load the labelled fictional initial observations (or a compatible observation CSV). Continue through **Input → Analysis → Findings → Experiment options → New results**. Choose one of three different follow-ups, introduce its fictional result and repeat the analysis. Earlier rounds remain visible in the same investigation; starting a new presentation creates a separate record and never resets existing workspace data.
+
+The fictional measurements are post-PCR band intensities in arbitrary units, not qPCR cycle values. Numerical summaries are calculated from the imported rows using declared illustrative heuristics. This demonstration does not establish biological validity, perform experiments or deduct stock. PCR material readiness is not asserted because matching inventory and complete template quantities have not been provided. No live model is required or claimed for this fictional scenario.
+
+See [the PCR demo narrative, data assumptions and source](docs/PCR_DEMO.md).
+
+## Earlier microplate research walkthrough
 
 1. Open **Investigation** and save a research question.
 2. Import the data owner’s initial CSV, or explicitly choose the separately labelled synthetic companion observations.
@@ -62,6 +72,6 @@ Optional `run_workflow` payment API sends real **test-money USDC on Solana devne
 
 ## Scope
 
-One supported synthetic SOP layout and one bounded two-group, eight-specimen/two-control investigation. Descriptive linear group/order analysis uses declared heuristics; it does not establish statistical significance or causality. No arbitrary document understanding, autonomous scientific discovery, live literature search, scientific validity certification, supplier orders or instrument execution. Payments are an explicitly enabled Solana devnet integration; no mainnet payments are supported. The restricted-project API is denied server-side; demo-mode access is intentionally shared and is not individual institutional authentication. Historical events preserve planned/actual quantities, authenticated session actor, source protocol, lot uncertainty and variance.
+A guided fictional PCR scenario plus the earlier supported synthetic SOP and bounded two-group, eight-specimen/two-control investigation. Analyses use declared descriptive heuristics; they do not establish statistical significance or causality. The PCR PDF is a fixed supplied reference, not a claim of general PDF understanding or an approved material allocation. No autonomous scientific discovery, live literature search, scientific validity certification, supplier orders or instrument execution. Payments are an explicitly enabled Solana devnet integration; no mainnet payments are supported. The restricted-project API is denied server-side; demo-mode access is intentionally shared and is not individual institutional authentication. Historical events preserve planned/actual quantities, authenticated session actor, source protocol, lot uncertainty and variance.
 
 The OpenFoundry Apache-2.0 licence is retained in `OpenFoundry/LICENSE`. Upstream services remain reference source; this demonstrator uses its SvelteKit scaffold and a dedicated SQLite backend, with no requirement to run the Rust service stack.

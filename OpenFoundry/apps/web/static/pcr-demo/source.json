@@ -1,0 +1,45 @@
+{
+  "filename": "PCR_protocol.pdf",
+  "title": "Protocol for OneTaq 2X Master Mix with Standard Buffer (NEB #M0482)",
+  "publisher": "New England Biolabs (NEB)",
+  "author": "New England Biolabs (NEB)",
+  "pages": 3,
+  "sha256": "a5cda7064aba2db5449a195c8112779b4f8173593fc67c2d51096cf5f4c5feaf",
+  "bytes": 205020,
+  "source_kind": "user_supplied_protocol_pdf",
+  "provenance": "Byte-identical copy of the user-supplied PDF. The PDF contains routine PCR protocol context, not observations or experimental results.",
+  "display_only": true,
+  "legacy_preflight_parser_supported": false,
+  "facts": [
+    {
+      "page": 1,
+      "topic": "Scope",
+      "text": "General guidance for routine PCR using OneTaq 2X Master Mix with Standard Buffer; no specific organism or target is identified."
+    },
+    {
+      "page": 1,
+      "topic": "Components",
+      "text": "The reaction table names forward primer, reverse primer, template DNA, master mix and nuclease-free water."
+    },
+    {
+      "page": 1,
+      "topic": "Incomplete quantities",
+      "text": "Template DNA is variable; water fills the remaining reaction volume. A complete allocation cannot be derived without the missing input choices."
+    },
+    {
+      "page": 2,
+      "topic": "Context",
+      "text": "The source discusses template quality and primer-dependent optimisation. It does not establish a validated experiment design for this demonstration."
+    },
+    {
+      "page": 3,
+      "topic": "Results absent",
+      "text": "The document provides guidelines and references; it supplies no specimen-level observations or results for the fictional scenario."
+    }
+  ],
+  "limitations": [
+    "Display-only protocol context; the demo does not claim the legacy protocol parser extracted or approved this PDF.",
+    "No inventory allocation, stock sufficiency, control acceptance, physical execution or clinical conclusion is established.",
+    "Every CSV fixture is fictional, deterministic post-PCR band-intensity illustration data in arbitrary units; none is qPCR, Ct or a clinical measurement."
+  ]
+}

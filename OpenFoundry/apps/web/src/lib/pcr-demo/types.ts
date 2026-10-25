@@ -1,0 +1,11 @@
+export type PCROptionId = 'specificity' | 'consistency' | 'independent-repeat';
+export type PCRObservation = { run_id: string; sample_id: string; condition: string; target_signal: number; background_signal: number; control_type: 'none' | 'positive' | 'negative' };
+export type PCRMetrics = { specimen_count: number; target_mean: number; background_mean: number; target_cv_percent: number | null; background_ratio_percent: number | null; positive_target: number; negative_target: number; negative_background: number };
+export type PCRExperimentOption = { id: PCROptionId; rank: number; title: string; question: string; rationale: string; expected_learning: string; tradeoff: string; recommended: boolean; fixture_url: string };
+export type PCRAnalysisStep = { id: string; title: string; detail: string; status: 'completed' };
+export type PCRAnalysis = { id: string; round_id: string; evidence_hash: string; created_at: string; metrics: PCRMetrics; headline: string; observations: string[]; interpretation: string; recommendation: string; why_changed: string | null; limitations: string[]; steps: PCRAnalysisStep[]; options: PCRExperimentOption[] };
+export type PCRSelection = { id: string; option_id: PCROptionId; title: string; round_id: string; analysis_id: string; evidence_hash: string; selected_at: string; selected_by: string; status: 'selected' | 'results_added' };
+export type PCRRound = { id: string; number: number; parent_selection_id: string | null; created_at: string; filename: string; content_hash: string; csv: string; rows: PCRObservation[]; analysis: PCRAnalysis | null; selection: PCRSelection | null };
+export type PCRInvestigation = { id: string; project_id: string; title: string; question: string; mode: 'fictional_scenario'; source_filename: string; source_sha256: string; created_at: string; updated_at: string; created_by: string; rounds: PCRRound[] };
+export type PCRDemoDetail = { investigation: PCRInvestigation; current_round: PCRRound; rounds: PCRRound[] };
+export type PCRScenario = { title: string; question: string; mode: 'fictional_scenario'; source_filename: string; source_sha256: string; source_url: string; initial_fixture_url: string; notice: string; thresholds: { background_ratio_percent: number; target_cv_percent: number; negative_target: number }; options: { id: PCROptionId; title: string; fixture_url: string }[] };

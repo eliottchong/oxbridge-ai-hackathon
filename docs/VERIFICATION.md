@@ -31,6 +31,16 @@ Screenshots `labrelax-preflight.png` and `labrelax-continuity.png` record this w
 - `labrelax-research-before.png` and `labrelax-research-after.png` show the actual browser flow. Sources and outputs are labelled synthetic. No physical experiment, general scientific validity, statistical significance or new discovery is claimed.
 - Real function-calling transport, failures/aborts, strict allowlist and budgets are verified with mocked provider responses. A **live provider-backed run has not been verified** without a supplied API key. No-key mode is visibly **scripted walkthrough**, while deterministic analysis and material preflight execute against the actual supplied data.
 
+## Guided fictional PCR presentation demo, 25 October 2026
+
+- Full application suite: **261 tests passed** across twelve files, including sixteen PCR cases covering numerical summaries, alternative results, controls, zero target, evidence reuse, stale choices, idempotency and persistence.
+- Svelte/TypeScript diagnostics: **zero errors and zero warnings**. Production Node build passed.
+- Production HTTP checks: **46 PCR checks**, plus the existing **35 preflight** and **55 research** checks. All use disposable databases and leave the team's stock unchanged.
+- PCR HTTP coverage includes exact served-PDF SHA-256, authentication/CSRF/project checks, initial evidence and real calculations, three experiment choices, recorded selection/evidence links, two follow-up cycles, changing recommendations, replay protection, restart persistence and unchanged inventory.
+- Production browser walkthrough on an isolated database: input preview → completed analysis checks → initial interpretation → specificity choice and acknowledgment → fictional result preview → new analysis → revised direction and retained earlier interpretation. The analysis screen waits for the presenter to choose **View findings**, rather than introducing a fake delay.
+- The original three-page PCR PDF is retained byte-for-byte as context. Every observation and extension experiment is explicitly fictional. The app uses declared arithmetic heuristics for this scenario and does not claim a live model, complete PCR protocol extraction, laboratory execution or material readiness.
+- `pcr-demo-learning-loop.png` records the actual browser result and its before/after reasoning. Reusing an identical evidence file is explicitly identified as a replay, not an independent replicate.
+
 ## Combined research and payment merge
 
 - Resolved shared configuration, npm scripts and documentation by retaining both research investigations and separately authorised devnet payments. Hosted startup keeps `.env` loading; the root test command includes both features.

@@ -7,6 +7,7 @@ import { parseProtocolFile, ProtocolParseError, MAX_PROTOCOL_BYTES } from '$lib/
 import { transcribeWithAI, AITranscriptionError } from '$lib/server/preflight/ai-transcription';
 import { ResearchService } from '$lib/server/research/service';
 import { startResearchRun } from '$lib/server/research/agent';
+import { PCRDemoService } from '$lib/server/pcr-demo/service';
 import type { ProtocolDraft } from '$lib/preflight/types';
 
 async function readBounded(request: Request, maximum: number): Promise<Uint8Array> {
@@ -52,6 +53,21 @@ async function handle(event: RequestEvent): Promise<Response> {
     const actor = authenticate(event);
     if (method !== 'GET') requireMutation(event, actor);
     const service = new LabService(getStore());
+    if (path === 'pcr-demo/scenario' || path === 'pcr-demo/investigations' || path.startsWith('pcr-demo/investigations/')) {
+      const demo = new PCRDemoService(service.store);
+      if (path === 'pcr-demo/scenario' && method === 'GET') return json(demo.scenario(actor));
+      if (path === 'pcr-demo/investigations' && method === 'GET') return json({ investigations: demo.list(actor, event.url.searchParams.get('project_id')) });
+      if (path === 'pcr-demo/investigations' && method === 'POST') return json(demo.create(actor, await bodyJson(event)), { status: 201 });
+      const investigation = /^pcr-demo\/investigations\/([^/]+)$/.exec(path);
+      if (investigation && method === 'GET') return json(demo.detail(actor, investigation[1]));
+      const analysis = /^pcr-demo\/investigations\/([^/]+)\/analyse$/.exec(path);
+      if (analysis && method === 'POST') { await bodyJson(event); return json(demo.analyse(actor, analysis[1])); }
+      const selection = /^pcr-demo\/investigations\/([^/]+)\/select$/.exec(path);
+      if (selection && method === 'POST') return json(demo.select(actor, selection[1], await bodyJson(event)), { status: 201 });
+      const result = /^pcr-demo\/investigations\/([^/]+)\/results$/.exec(path);
+      if (result && method === 'POST') return json(demo.addResult(actor, result[1], await bodyJson(event)), { status: 201 });
+      throw notFound();
+    }
     if (path === 'protocols' && method === 'GET') {
       const project = event.url.searchParams.get('project_id');
       requireProject(actor, project);

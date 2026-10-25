@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import Icon from '$lib/lab/Icon.svelte';
   import InvestigationWorkspace from '$lib/research/InvestigationWorkspace.svelte';
+  import PCRDemoWorkspace from '$lib/pcr-demo/PCRDemoWorkspace.svelte';
   import type { ActualLine, Confirmation, ConsumptionEvent, InventoryResource, ProtocolDraft, RunPlan, SessionInfo } from '$lib/preflight/types';
   import './lab.css';
 
@@ -17,6 +18,7 @@
   let continuity = $state<Continuity | null>(null);
   let confirmation = $state<Confirmation | null>(null);
   let tab = $state('Investigation');
+  let legacyResearch = $state(false);
   let mobileNavOpen = $state(false);
   let busy = $state('Connecting to your workspace');
   let error = $state('');
@@ -223,7 +225,15 @@
       {#if needsSignIn}
         <section class="panel signin-panel"><span class="signin-icon"><Icon name="shield" size={26} /></span><span class="section-kicker">Your research workspace</span><h2>Sign in to LabRelax.</h2><p>Enter the workspace access token supplied by your team administrator to open protocols, recorded inventory and experiment evidence.</p><form onsubmit={signIn}><label for="workspace-token">Workspace access token</label><input id="workspace-token" type="password" autocomplete="off" spellcheck="false" bind:value={workspaceToken} placeholder="Enter your access token" required disabled={!!busy} /><button class="primary" type="submit" disabled={!!busy || !workspaceToken.trim()}>Sign in <Icon name="arrow" size={15} /></button></form><small>Your token is exchanged for an authenticated session.</small></section>
       {:else if tab === 'Investigation'}
-        {#if session}<InvestigationWorkspace {session} approvedProtocol={approved ? draft : null} onReviewProtocol={() => tab = 'Preflight'} onViewPlan={openResearchPlan} />{/if}
+        {#if session}
+          {#if legacyResearch}
+            <div class="research-return"><button class="text-button" onclick={() => legacyResearch = false}>← PCR presentation demo</button><span>Earlier microplate investigation workspace</span></div>
+            <InvestigationWorkspace {session} approvedProtocol={approved ? draft : null} onReviewProtocol={() => tab = 'Preflight'} onViewPlan={openResearchPlan} />
+          {:else}
+            <PCRDemoWorkspace {session} />
+            <div class="research-return"><button class="text-button" onclick={() => legacyResearch = true}>Open earlier microplate investigations <Icon name="arrow" size={14} /></button><span>Existing evidence, preflight and inventory are preserved.</span></div>
+          {/if}
+        {/if}
       {:else if tab === 'Preflight'}
         <div class="research-return"><button class="text-button" onclick={() => tab = 'Investigation'}>← Return to your investigation</button><span>Protocol review and actual use support your research investigation.</span></div>
         <div class="steps" aria-label="Workflow progress">{#each ['Upload protocol', 'Review evidence', 'Check readiness', 'Record actual use'] as step, i}<div class:current={stage === i + 1} class:complete={stage > i + 1}><span>{#if stage > i + 1}<Icon name="check" size={13} />{:else}{i + 1}{/if}</span><strong>{step}</strong></div>{/each}</div>

@@ -1,0 +1,9 @@
+run_id,sample_id,condition,target_signal,background_signal,control_type
+PCR-DEMO-BASELINE,S1,baseline,58,30,none
+PCR-DEMO-BASELINE,S2,baseline,85,36,none
+PCR-DEMO-BASELINE,S3,baseline,60,29,none
+PCR-DEMO-BASELINE,S4,baseline,88,39,none
+PCR-DEMO-BASELINE,S5,baseline,56,31,none
+PCR-DEMO-BASELINE,S6,baseline,90,35,none
+PCR-DEMO-BASELINE,POS,baseline,100,5,positive
+PCR-DEMO-BASELINE,NEG,baseline,0,2,negative

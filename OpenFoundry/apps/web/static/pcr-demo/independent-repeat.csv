@@ -1,0 +1,9 @@
+run_id,sample_id,condition,target_signal,background_signal,control_type
+PCR-DEMO-REPEAT,S1,independent-repeat,61,29,none
+PCR-DEMO-REPEAT,S2,independent-repeat,87,34,none
+PCR-DEMO-REPEAT,S3,independent-repeat,59,30,none
+PCR-DEMO-REPEAT,S4,independent-repeat,89,35,none
+PCR-DEMO-REPEAT,S5,independent-repeat,62,28,none
+PCR-DEMO-REPEAT,S6,independent-repeat,86,34,none
+PCR-DEMO-REPEAT,POS,independent-repeat,100,5,positive
+PCR-DEMO-REPEAT,NEG,independent-repeat,0,2,negative

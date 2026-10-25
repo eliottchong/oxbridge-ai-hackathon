@@ -1,0 +1,9 @@
+run_id,sample_id,condition,target_signal,background_signal,control_type
+PCR-DEMO-SPECIFICITY,S1,specificity,72,8,none
+PCR-DEMO-SPECIFICITY,S2,specificity,75,7,none
+PCR-DEMO-SPECIFICITY,S3,specificity,74,9,none
+PCR-DEMO-SPECIFICITY,S4,specificity,73,8,none
+PCR-DEMO-SPECIFICITY,S5,specificity,76,7,none
+PCR-DEMO-SPECIFICITY,S6,specificity,74,8,none
+PCR-DEMO-SPECIFICITY,POS,specificity,100,5,positive
+PCR-DEMO-SPECIFICITY,NEG,specificity,0,2,negative

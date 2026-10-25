@@ -1,0 +1,9 @@
+run_id,sample_id,condition,target_signal,background_signal,control_type
+PCR-DEMO-CONSISTENCY,S1,consistency,82,30,none
+PCR-DEMO-CONSISTENCY,S2,consistency,80,31,none
+PCR-DEMO-CONSISTENCY,S3,consistency,83,29,none
+PCR-DEMO-CONSISTENCY,S4,consistency,81,30,none
+PCR-DEMO-CONSISTENCY,S5,consistency,82,32,none
+PCR-DEMO-CONSISTENCY,S6,consistency,80,31,none
+PCR-DEMO-CONSISTENCY,POS,consistency,100,5,positive
+PCR-DEMO-CONSISTENCY,NEG,consistency,0,2,negative
