@@ -26,7 +26,15 @@ Run the official Cloudflare Tunnel client to expose only this instance:
 cloudflared tunnel --url http://127.0.0.1:5180 --protocol http2 --no-autoupdate
 ```
 
-The tunnel URL is temporary: the laptop must remain awake and connected and both processes must remain running. A restarted tunnel may get a new URL, requiring a project URL update and connection check. A persistent hosted deployment is still needed after the hackathon.
+On the event network, Cloudflare's port 7844 TLS connection timed out. The working deployment instead uses localhost.run's documented SSH tunnel:
+
+```sh
+ssh -T -o ServerAliveInterval=20 -o ExitOnForwardFailure=yes -R 80:127.0.0.1:5180 nokey@localhost.run
+```
+
+Public URL at setup: https://6abc4a4f92f65e.lhr.life . The organiser's connection test successfully reached the authenticated health endpoint and identified LabRelax. Direct HTTPS access from the event network timed out, so local browser reachability may differ from external verifier reachability.
+
+The tunnel URL is temporary: the laptop must remain awake and connected and both processes must remain running. A restarted tunnel may get a new URL, requiring a project URL update and connection check. A persistent hosted deployment is still needed after the hackathon. Local process IDs and runtime settings are kept outside Git under `~/.config/agent-studio-tokenmaxxers/`.
 
 ## Validation
 
