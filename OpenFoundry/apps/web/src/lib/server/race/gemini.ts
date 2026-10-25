@@ -79,6 +79,7 @@ export async function solveWithGemini(task: RaceTask, fetcher: typeof fetch = fe
       generationConfig: { temperature: 0, maxOutputTokens: 2048 }
     };
     if (task.schema) payload.systemInstruction.parts[0].text += '\nRequired result JSON schema: ' + JSON.stringify(task.schema);
+    if (tools.length) payload.systemInstruction.parts[0].text += '\nFor the final answer after tool execution, return ONLY a JSON object with shape {"text":"concise explanation", "data":{structured result fields}}. Put machine-readable computed answers in data, using the exact field names requested. Use numeric values for amounts. For currency totals use camelCase keys such as totalGbp for GBP or totalUsd for USD; round monetary totals to two decimal places unless the user specifies otherwise. Do not put the result only in the explanation. If a result schema is supplied it applies to data.';
     if (tools.length) payload.tools = [{ functionDeclarations: tools.map(t => ({ name: t.name,
       description: t.description || t.name, parametersJsonSchema: t.inputSchema || { type: 'object', properties: {} } })) }];
     const { response, data } = await requestJson(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`, {
@@ -100,7 +101,10 @@ export async function solveWithGemini(task: RaceTask, fetcher: typeof fetch = fe
       if (!text) return fail(502, 'upstream_unavailable', 'Gemini returned an empty answer.');
       let structured;
       try { structured = JSON.parse(text.replace(/^```(?:json)?\s*|\s*```$/g, '')); } catch { /* Natural-language output is valid. */ }
-      return { output: { text, ...(structured !== undefined ? { data: structured } : {}), ...(toolResults.length ? { toolResults } : {}) }, meta: { model: MODEL, provider: 'Google Gemini' } };
+      const nested = object(structured) && typeof structured.text === 'string' && object(structured.data);
+      const resultData = nested ? structured.data : structured;
+      if (task.type === 'use_tools' && !object(resultData)) return fail(502, 'upstream_unavailable', 'The model did not provide a structured tool result.');
+      return { output: { text: nested ? structured.text : text, ...(resultData !== undefined ? { data: resultData } : {}), ...(toolResults.length ? { toolResults } : {}) }, meta: { model: MODEL, provider: 'Google Gemini' } };
     }
     if (calls + functionCalls.length > maxCalls) return fail(403, 'limit_exceeded', 'Tool-call limit would be exceeded.');
     contents.push(content); // Preserve provider thought signatures on model tool calls.

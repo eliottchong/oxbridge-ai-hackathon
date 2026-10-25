@@ -16,9 +16,11 @@ describe('Gemini race execution', () => {
     expect(fetcher).toHaveBeenCalledOnce();
   });
   it('executes the model-selected tool and keeps the challenge token out of model requests', async () => {
-    const fetcher = vi.fn().mockResolvedValueOnce(call()).mockResolvedValueOnce(Response.json({ value: 37 })).mockResolvedValueOnce(answer('37'));
+    const fetcher = vi.fn().mockResolvedValueOnce(call()).mockResolvedValueOnce(Response.json({ value: 37 })).mockResolvedValueOnce(answer('{"text":"37","data":{"value":37}}'));
     const result = await solveWithGemini(task(), fetcher);
     expect(result.output.toolResults).toEqual([{ tool: 'lookup_record', result: { value: 37 } }]);
+    expect(result.output.data).toEqual({ value: 37 });
+    expect(result.output.text).toBe('37');
     expect(fetcher.mock.calls[1][1].headers.authorization).toBe('Bearer challenge-only-token');
     expect(fetcher.mock.calls[0][1].body).not.toContain('challenge-only-token');
     expect(fetcher.mock.calls[2][1].body).toContain('retained-signature');
@@ -29,7 +31,7 @@ describe('Gemini race execution', () => {
   });
   it('retries a transient tool 503 before using the successful result', async () => {
     const fetcher = vi.fn().mockResolvedValueOnce(call()).mockResolvedValueOnce(Response.json({ error: 'retry' }, { status: 503 }))
-      .mockResolvedValueOnce(Response.json({ value: 9 })).mockResolvedValueOnce(answer('9'));
+      .mockResolvedValueOnce(Response.json({ value: 9 })).mockResolvedValueOnce(answer('{"text":"9","data":{"value":9}}'));
     const result = await solveWithGemini(task(), fetcher);
     expect(result.output.text).toBe('9');
     expect(fetcher).toHaveBeenCalledTimes(4);
